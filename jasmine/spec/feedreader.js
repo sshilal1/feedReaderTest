@@ -45,37 +45,57 @@ $(function() {
     });
 
 
-    /* TODO: Write a new test suite named "The menu" */
+    /* TODO: Write a new test suite named 'The menu' */
 	describe('The Menu', function() {
 	
 		// Body class fluctuates 'menu-hidden' when it shows/hides
-		it("menu is hidden by default", function() {
-			expect(document.body.className).toContain("menu-hidden");
+		it('menu is hidden by default', function() {
+			expect(document.body.className).toContain('menu-hidden');
 		});
 
         // Click on the visibility once, expect shows, click again, expect hidden
-		it("menu changes visibility on click", function() {
-			document.querySelector(".icon-list").click();
-			expect(document.body.className).not.toContain("menu-hidden");
+		it('menu changes visibility on click', function() {
+			document.querySelector('.icon-list').click();
+			expect(document.body.className).not.toContain('menu-hidden');
 
-			document.querySelector(".icon-list").click();
-			expect(document.body.className).toContain("menu-hidden");
+			document.querySelector('.icon-list').click();
+			expect(document.body.className).toContain('menu-hidden');
 		});
 	});
 
-    /* TODO: Write a new test suite named "Initial Entries" */
-
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test will require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
-         */
-
-    /* TODO: Write a new test suite named "New Feed Selection"
-
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
+    /* TODO: Write a new test suite named 'Initial Entries' */
+	describe('Initial Entries', function() {
+		
+		beforeEach(function(done) {
+			loadFeed(0, function() {
+				done();
+			});
+		});
+		
+		it('loads at least 1 entry', function() {
+			var entries = document.querySelectorAll('.entry');
+			expect(entries.length).toBeGreaterThan(0);
+		});
+	});
+	
+	describe('New Feed Selection', function() {
+	
+		var firstFeed,
+			secondFeed;
+		
+		beforeEach(function(done) {
+			loadFeed(1, function() {
+				firstFeed = document.querySelector('.feed');
+				loadFeed(2, function() {
+					done();
+				});
+			});        
+		});
+		
+		it('changes the feed content on screen', function() {
+			secondFeed = document.querySelector('.feed');
+			
+			expect(firstFeed).not.toBe(secondFeed);
+		});
+	});
 }());

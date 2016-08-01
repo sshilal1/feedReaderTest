@@ -67,14 +67,13 @@ $(function() {
 	describe('Initial Entries', function() {
 		
 		beforeEach(function(done) {
-			loadFeed(0, function() {
-				done();
-			});
+			loadFeed(0, done);
 		});
 		
 		it('loads at least 1 entry', function() {
-			var entries = document.querySelectorAll('.entry');
-			expect(entries.length).toBeGreaterThan(0);
+			var entryLength = $('.feed .entry').length;
+			console.log(entryLength);
+			expect(entryLength).toBeGreaterThan(0);
 		});
 	});
 	
@@ -85,17 +84,15 @@ $(function() {
 		
 		beforeEach(function(done) {
 			loadFeed(1, function() {
-				firstFeed = document.querySelector('.feed');
-				loadFeed(2, function() {
-					done();
-				});
+				firstFeed = document.querySelector('.feed').innerText;
+				loadFeed(2, done);
 			});        
 		});
 		
 		it('changes the feed content on screen', function() {
-			secondFeed = document.querySelector('.feed');
+			secondFeed = document.querySelector('.feed').innerText;
 			
-			expect(firstFeed).not.toBe(secondFeed);
+			expect(firstFeed).not.toEqual(secondFeed);
 		});
 	});
 }());
